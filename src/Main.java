@@ -2,35 +2,43 @@ import java.util.Locale;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) throws NameUndefinedException, IncorrectAgeException{
-        boolean flag = true;
-        while(flag) {
+    public static void main(String[] args) {
+
             Scanner scanner = new Scanner(System.in);
             scanner.useLocale(Locale.US);
-            Person pers1 = new Person();
+
             System.out.println("Imię");
-            pers1.setFirstName(scanner.nextLine());
-            if(pers1.getFirstName().length() <= 2 || pers1.getFirstName() =="") {
-                throw new NameUndefinedException();
-            }
+            String firstName = scanner.nextLine();
             System.out.println("Nazwisko");
-            pers1.setLastName(scanner.nextLine());
-            if(pers1.getLastName().length() <= 2 || pers1.getLastName() =="") {
-                throw new NameUndefinedException();
-            }
+            String lastName = scanner.nextLine();
             System.out.println("Wiek");
-            pers1.setAge(scanner.nextInt());
-            if (pers1.getAge() < 1) {
-                throw new IncorrectAgeException();
-            }
+            int age = scanner.nextInt();
             scanner.nextLine();
             System.out.println("Pesel");
-            pers1.setPesel(scanner.nextInt());
+            int pesel = scanner.nextInt();
             scanner.nextLine();
+
+            try{
+                Person pers1 = new Person(firstName, lastName, age, pesel);
+            }
+            catch (NameUndefinedException ex){
+                System.out.println(ex.getMessage());
+                while(firstName.length() <= 2 || firstName == "" || lastName.length() <= 2 || lastName =="");{
+                    System.out.println("Podaj dane jeszcze raz");
+                    firstName = scanner.nextLine();
+                    lastName = scanner.nextLine();
+                }
+            }
+            catch (IncorrectAgeException ex){
+                System.out.println(ex.getMessage());
+            }
+            while (age <1){
+                System.out.println("Podaj wiek jeszcze raz");
+                age = scanner.nextInt();
+            }
             System.out.println("Thank you");
 
-            System.out.println(pers1.toString());
-            flag = false;
-        }
+            System.out.println("Dane osoby to: " + firstName + " " + lastName + " " + age + " " + pesel);
+
     }
 }
